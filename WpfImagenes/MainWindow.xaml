@@ -1,0 +1,141 @@
+﻿<Window x:Class="WpfImagenes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfImagenes"
+        xmlns:vm ="clr-namespace:WpfImagenes.ViewModel"
+         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="793">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="6*" />
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="1"
+            Margin="0,1,0,0">
+            <TextBlock Text="Buscar:  " 
+                       FontSize="18"
+                       Margin="10,0,10,0"
+                       />
+            <TextBox 
+                FontSize="19"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                Margin="10,1,10,2"
+                Text="{Binding TagSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+
+
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.RowSpan="2"
+                    Background="#212529"
+                    Margin="0,1,0,0">
+
+            <TextBlock Text="Gif App" 
+                       Background="#212529"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       VerticalAlignment="Stretch"
+                       HorizontalAlignment="Stretch"
+                       TextAlignment="Left"
+                       Padding="20,10,0,0"
+                       />
+
+            <Line
+                X1="5" Y1="0"
+                X2="230" Y2="0"
+                Stroke="LightYellow"
+                StrokeThickness="1"
+                Margin="10,20,10,20"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
+
+            <ListView ItemsSource="{Binding TagHistory, UpdateSourceTrigger=PropertyChanged}" 
+                      Margin="10,5,10,5"  
+                      Background="#212529"
+                      BorderBrush="#212529"
+                      SelectedItem="{Binding Item}" >
+                              
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <TextBlock Text="{Binding FullName }" 
+                                    FontSize="22"
+                                    Foreground="#212529"
+                                    Background="White"
+                                    Margin="0,5,0,5"
+                                    Width="220" >
+                            <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding DataContext.SearchCommand , RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        </TextBlock>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" 
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="10">
+            <ItemsControl Grid.Row="1" Grid.Column="1" 
+                          Background="#212529"
+                          ItemsSource="{Binding ListGifs, UpdateSourceTrigger=PropertyChanged}"
+                          >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <MediaElement Name="myMediaElement"
+                                      Width="250" Height="250"
+                                      Margin="5">
+                            <MediaElement.Triggers>
+                                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                                                over and over indefinitely.-->
+                                                <MediaTimeline Source="{Binding Images.Downsized.Url}" 
+                                                   Storyboard.TargetName="myMediaElement" 
+                                                               
+                                                    RepeatBehavior="Forever" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </MediaElement.Triggers>
+                        </MediaElement>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
