@@ -79,12 +79,13 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
 
-                        <TextBlock Text="{Binding FullName }" 
+                        <TextBlock Text="{Binding Title }" 
                                     FontSize="22"
                                     Foreground="#212529"
                                     Background="White"
                                     Margin="0,5,0,5"
-                                    Width="220" >
+                                    Width="220" 
+                                   HorizontalAlignment="Center">
                             <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonUp">
                                 <i:InvokeCommandAction Command="{Binding DataContext.SearchCommand , RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}" />

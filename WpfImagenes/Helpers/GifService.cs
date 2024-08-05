@@ -102,16 +102,6 @@ namespace WpfImagenes.Helpers
                 }
 
                 SetFullName();
-
-                if (!TagHistory.Any<GifItem>(x => x.Title == tagSearch))
-                {
-                }
-                else
-                {
-
-
-                }
-
             }
         }
 
@@ -120,6 +110,7 @@ namespace WpfImagenes.Helpers
             for (int i = 0; i < _tagHistory.Count; i++)
             {
                 TagHistory[i].FullName = $"{i + 1} - {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(TagHistory[i].Title.ToLower())}";
+                TagHistory[i].Title = $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(TagHistory[i].Title.ToLower())}";
             }
         }
     }
